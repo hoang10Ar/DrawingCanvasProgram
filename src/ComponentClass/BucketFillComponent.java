@@ -1,7 +1,6 @@
 package ComponentClass;
 
 import UtilInterface.DrawableOnCanvas;
-import UtilInterface.SymbolOnCanvas;
 
 public class BucketFillComponent implements DrawableOnCanvas {
     private int xCoordinate, yCoordinate;
@@ -22,10 +21,7 @@ public class BucketFillComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         oldColor = canvas.getColorAtPoint(this.xCoordinate, this.yCoordinate);
-        String SYMBOL_OF_LINE = SymbolOnCanvas.LINE_SYMBOL;
-        if(canvas.isHavePoint(this.xCoordinate, this.yCoordinate)
-                && !canvas.getColorAtPoint(this.xCoordinate, this.yCoordinate).equals(SYMBOL_OF_LINE)
-                && !newColor.equals(SYMBOL_OF_LINE)) {
+        if(canvas.isHavePoint(this.xCoordinate, this.yCoordinate)) {
             fillOnCanvasAtPoint(canvas, this.xCoordinate, this.yCoordinate);
         }
     }
