@@ -1,5 +1,7 @@
 package ComponentClass;
 
+import UtilClass.PointXY;
+import UtilInterface.ColorOfComponent;
 import UtilInterface.DrawableOnCanvas;
 
 public class CanvasComponent implements DrawableOnCanvas {
@@ -28,39 +30,52 @@ public class CanvasComponent implements DrawableOnCanvas {
     }
 
     private void makeLeftBorderCanvas() {
+        String color = ColorOfComponent.LEFT_BORDER_CANVAS_COLOR;
         for(int yCoordinate = 0; yCoordinate < this.canvasHeight + 2; yCoordinate++) {
-            setColorAtPoint(0, yCoordinate, "|");
+            setColorAtPoint(0, yCoordinate, color);
         }
     }
 
     private void makeRightBorderCanvas() {
+        String color = ColorOfComponent.RIGHT_BORDER_CANVAS_COLOR;
         for(int yCoordinate = 0; yCoordinate < this.canvasHeight + 2; yCoordinate++) {
-            setColorAtPoint(this.canvasWidth + 1, yCoordinate, "|");
+            setColorAtPoint(this.canvasWidth + 1, yCoordinate, color);
         }
     }
 
     private void makeTopBorderCanvas() {
+        String color = ColorOfComponent.TOP_BORDER_CANVAS_COLOR;
         for(int xCoordinate = 0; xCoordinate < this.canvasWidth + 2; xCoordinate++) {
-            setColorAtPoint(xCoordinate, 0, "-");
+            setColorAtPoint(xCoordinate, 0, color);
         }
     }
 
     private void makeBottomBorderCanvas() {
+        String color = ColorOfComponent.BOTTOM_BORDER_CANVAS_COLOR;
         for(int xCoordinate = 0; xCoordinate < this.canvasWidth + 2; xCoordinate++) {
-            setColorAtPoint(xCoordinate, this.canvasHeight + 1, "-");
+            setColorAtPoint(xCoordinate, this.canvasHeight + 1, color);
         }
     }
 
     private void makeEmptyInsideCanvas() {
+        String color = ColorOfComponent.EMPTY_COLOR;
         for(int xCoordinate = 1; xCoordinate <= this.canvasWidth; xCoordinate++) {
             for(int yCoordinate = 1; yCoordinate <= this.canvasHeight; yCoordinate++) {
-                setColorAtPoint(xCoordinate, yCoordinate, " ");
+                setColorAtPoint(xCoordinate, yCoordinate, color);
             }
         }
     }
 
+    public void setColorAtPoint(PointXY po, String color) {
+        setColorAtPoint(po.getXCoordinate(), po.getYCoordinate(), color);
+    }
+
     public void setColorAtPoint(int xCoordinate, int yCoordinate, String color) {
         this.canvasMatrix[yCoordinate][xCoordinate] = color;
+    }
+
+    public String getColorAtPoint(PointXY po) {
+        return getColorAtPoint(po.getXCoordinate(), po.getYCoordinate());
     }
 
     public String getColorAtPoint(int xCoordinate, int yCoordinate) {
@@ -70,6 +85,10 @@ public class CanvasComponent implements DrawableOnCanvas {
         }
 
         return color;
+    }
+
+    public boolean isHavePoint(PointXY po) {
+        return isHavePoint(po.getXCoordinate(), po.getYCoordinate());
     }
 
     public boolean isHavePoint(int xCoordinate, int yCoordinate) {
