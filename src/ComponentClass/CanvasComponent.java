@@ -82,6 +82,14 @@ public class CanvasComponent implements DrawableOnCanvas {
         String color = null;
         if(isHavePoint(xCoordinate, yCoordinate)) {
             color = this.canvasMatrix[yCoordinate][xCoordinate];
+        } else if(isLeftBorderHavePoint(xCoordinate, yCoordinate)) {
+            color = ColorOfComponent.LEFT_BORDER_CANVAS_COLOR;
+        } else if(isRightBorderHavePoint(xCoordinate, yCoordinate)) {
+            color = ColorOfComponent.RIGHT_BORDER_CANVAS_COLOR;
+        } else if(isTopBorderHavePoint(xCoordinate, yCoordinate)) {
+            color = ColorOfComponent.TOP_BORDER_CANVAS_COLOR;
+        } else if(isBottomBorderHavePoint(xCoordinate, yCoordinate)) {
+            color = ColorOfComponent.BOTTOM_BORDER_CANVAS_COLOR;
         }
 
         return color;
@@ -92,12 +100,24 @@ public class CanvasComponent implements DrawableOnCanvas {
     }
 
     public boolean isHavePoint(int xCoordinate, int yCoordinate) {
-        if((xCoordinate >= 0) && (xCoordinate < this.canvasWidth + 2)
-                && (yCoordinate >= 0) && (yCoordinate < this.canvasHeight + 2)) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((xCoordinate >= 1) && (xCoordinate <= this.canvasWidth)
+        && (yCoordinate >= 1) && (yCoordinate <= this.canvasHeight));
+    }
+
+    private boolean isLeftBorderHavePoint(int xCoordinate, int yCoordinate) {
+        return (xCoordinate == 0 && yCoordinate >= 1 && yCoordinate <= this.canvasHeight);
+    }
+
+    private boolean isRightBorderHavePoint(int xCoordinate, int yCoordinate) {
+        return (xCoordinate == this.canvasWidth + 1 && yCoordinate >= 1 && yCoordinate <= this.canvasHeight);
+    }
+
+    private boolean isTopBorderHavePoint(int xCoordinate, int yCoordinate) {
+        return (yCoordinate == 0 && xCoordinate >= 0 && xCoordinate < this.canvasWidth + 2);
+    }
+
+    private boolean isBottomBorderHavePoint(int xCoordinate, int yCoordinate) {
+        return (yCoordinate == this.canvasHeight + 1 && xCoordinate >= 0 && xCoordinate < this.canvasWidth + 2);
     }
 
     public void printCanvas() {
@@ -113,14 +133,19 @@ public class CanvasComponent implements DrawableOnCanvas {
         return "Canvas: width = " + this.canvasWidth + ", height = " + this.canvasHeight;
     }
 
+    public int getCanvasWidth() {
+        return this.canvasWidth;
+    }
+
+    public int getCanvasHeight() {
+        return this.canvasHeight;
+    }
+
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
-        canvas = new CanvasComponent(this.canvasWidth, this.canvasHeight);
-        for(int xCoordinate = 1; xCoordinate <= canvas.canvasWidth; xCoordinate++) {
-            for(int yCoordinate = 1; yCoordinate <= canvas.canvasHeight; yCoordinate++) {
-                String colorOfThisCanvas = getColorAtPoint(xCoordinate, yCoordinate);
-                canvas.setColorAtPoint(xCoordinate, yCoordinate, colorOfThisCanvas);
-            }
-        }
+        canvas.canvasWidth = this.canvasWidth;
+        canvas.canvasHeight = this.canvasHeight;
+        canvas.canvasMatrix = new String[canvas.canvasHeight + 2][canvas.canvasWidth + 2];
+        canvas.makeEmptyCanvas();
     }
 }
