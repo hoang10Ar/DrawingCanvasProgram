@@ -7,6 +7,8 @@ import UtilClass.CommandTypeChecker;
 import java.util.Scanner;
 
 public class DrawingProgram {
+    private static final Scanner input = new Scanner(System.in);
+
     public static void runProgram() {
         String command = enterCommandToCreateCanvasComponent();
         DrawableOnCanvas componentOfCommand = CommandParser.getComponentByParsingCommand(command);
@@ -37,9 +39,7 @@ public class DrawingProgram {
     }
 
     private static String enterNotNullCommand() {
-        Scanner input = new Scanner(System.in);
         String command;
-
         do {
             System.out.print("Enter a command: ");
             command = input.nextLine();
@@ -49,6 +49,7 @@ public class DrawingProgram {
     }
 
     private static void quitProgram() {
+        input.close();
         System.out.println("Quit!!!");
         System.exit(0);
     }

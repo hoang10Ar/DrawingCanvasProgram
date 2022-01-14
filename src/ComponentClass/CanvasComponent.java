@@ -80,9 +80,7 @@ public class CanvasComponent implements DrawableOnCanvas {
 
     public String getColorAtPoint(int xCoordinate, int yCoordinate) {
         String color = null;
-        if(isHavePoint(xCoordinate, yCoordinate)) {
-            color = this.canvasMatrix[yCoordinate][xCoordinate];
-        } else if(isLeftBorderHavePoint(xCoordinate, yCoordinate)) {
+        if(isLeftBorderHavePoint(xCoordinate, yCoordinate)) {
             color = ColorOfComponent.LEFT_BORDER_CANVAS_COLOR;
         } else if(isRightBorderHavePoint(xCoordinate, yCoordinate)) {
             color = ColorOfComponent.RIGHT_BORDER_CANVAS_COLOR;
@@ -90,6 +88,8 @@ public class CanvasComponent implements DrawableOnCanvas {
             color = ColorOfComponent.TOP_BORDER_CANVAS_COLOR;
         } else if(isBottomBorderHavePoint(xCoordinate, yCoordinate)) {
             color = ColorOfComponent.BOTTOM_BORDER_CANVAS_COLOR;
+        } else if(isHavePoint(xCoordinate, yCoordinate)) {
+            color = this.canvasMatrix[yCoordinate][xCoordinate];
         }
 
         return color;
@@ -100,8 +100,8 @@ public class CanvasComponent implements DrawableOnCanvas {
     }
 
     public boolean isHavePoint(int xCoordinate, int yCoordinate) {
-        return ((xCoordinate >= 1) && (xCoordinate <= this.canvasWidth)
-        && (yCoordinate >= 1) && (yCoordinate <= this.canvasHeight));
+        return ((xCoordinate >= 0) && (xCoordinate <= this.canvasWidth)
+        && (yCoordinate >= 0) && (yCoordinate <= this.canvasHeight));
     }
 
     private boolean isLeftBorderHavePoint(int xCoordinate, int yCoordinate) {
