@@ -1,9 +1,7 @@
-package Main;
+package com.hoang.util_classes;
 
-import UtilInterface.DrawableOnCanvas;
-import UtilClass.CommandParser;
-import ComponentClass.CanvasComponent;
-import UtilClass.CommandTypeChecker;
+import com.hoang.component_classes.CanvasComponent;
+import com.hoang.util_interfaces.DrawableOnCanvas;
 import java.util.Scanner;
 
 public class DrawingProgram {

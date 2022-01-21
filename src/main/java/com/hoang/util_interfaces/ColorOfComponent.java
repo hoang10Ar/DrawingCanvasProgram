@@ -1,4 +1,4 @@
-package UtilInterface;
+package com.hoang.util_interfaces;
 
 public interface ColorOfComponent {
     String TOP_BORDER_CANVAS_COLOR = "-";

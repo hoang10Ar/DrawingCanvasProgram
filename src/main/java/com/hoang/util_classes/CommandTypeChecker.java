@@ -1,4 +1,4 @@
-package UtilClass;
+package com.hoang.util_classes;
 
 public class CommandTypeChecker {
     public static boolean isNullCommand(String command) {

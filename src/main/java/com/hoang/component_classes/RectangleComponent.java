@@ -1,8 +1,8 @@
-package ComponentClass;
+package com.hoang.component_classes;
 
-import UtilClass.PointXY;
-import UtilInterface.ColorOfComponent;
-import UtilInterface.DrawableOnCanvas;
+import com.hoang.util_classes.PointXY;
+import com.hoang.util_interfaces.ColorOfComponent;
+import com.hoang.util_interfaces.DrawableOnCanvas;
 
 public class RectangleComponent implements DrawableOnCanvas {
     private PointXY topLeftPoint, bottomRightPoint;

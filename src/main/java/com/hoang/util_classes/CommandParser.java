@@ -1,7 +1,7 @@
-package UtilClass;
+package com.hoang.util_classes;
 
-import UtilInterface.DrawableOnCanvas;
-import ComponentClass.*;
+import com.hoang.component_classes.*;
+import com.hoang.util_interfaces.DrawableOnCanvas;
 
 public class CommandParser {
     public static DrawableOnCanvas getComponentByParsingCommand(String command) {

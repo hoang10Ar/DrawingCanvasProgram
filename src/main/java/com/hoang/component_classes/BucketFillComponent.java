@@ -1,11 +1,12 @@
-package ComponentClass;
+package com.hoang.component_classes;
 
-import UtilClass.PointXY;
-import UtilInterface.DrawableOnCanvas;
+import com.hoang.util_classes.PointXY;
+import com.hoang.util_interfaces.DrawableOnCanvas;
 import java.util.LinkedList;
 
 public class BucketFillComponent implements DrawableOnCanvas {
     private PointXY startPoint;
+
     private String newColor;
 
     public BucketFillComponent(int x, int y, String color) {
@@ -32,9 +33,9 @@ public class BucketFillComponent implements DrawableOnCanvas {
 
     private void fillOnCanvas(CanvasComponent can) {
         String oldColor = can.getColorAtPoint(startPoint);
-        boolean[][] pointHaveBeenInList = new boolean[can.getCanvasWidth() + 2][can.getCanvasHeight() + 2];
+        final boolean[][] pointHaveBeenInList = new boolean[can.getCanvasWidth() + 2][can.getCanvasHeight() + 2];
         make2DFalseArray(pointHaveBeenInList);
-        LinkedList<PointXY> pointList = new LinkedList<>() {
+        LinkedList<PointXY> pointList = new LinkedList<PointXY>() {
             // Thay vì kiểm tra list có đang chứa 1 Point tại thời điểm hiện tại không
             // thì kiểm tra list đã từng chứa 1 Point trong quá khứ chưa
             @Override

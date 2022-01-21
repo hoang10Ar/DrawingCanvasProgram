@@ -1,6 +1,8 @@
-package Main;
+package com.hoang;
 
-public class Main {
+import com.hoang.util_classes.DrawingProgram;
+
+public class App {
     public static void main(String[] args) {
         DrawingProgram.runProgram();
     }

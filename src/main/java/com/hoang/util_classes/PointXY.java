@@ -1,4 +1,4 @@
-package UtilClass;
+package com.hoang.util_classes;
 
 public class PointXY {
     private int xCoordinate, yCoordinate;

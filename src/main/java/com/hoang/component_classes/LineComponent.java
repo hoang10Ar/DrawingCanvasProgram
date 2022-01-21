@@ -1,8 +1,8 @@
-package ComponentClass;
+package com.hoang.component_classes;
 
-import UtilInterface.ColorOfComponent;
-import UtilInterface.DrawableOnCanvas;
-import UtilClass.PointXY;
+import com.hoang.util_classes.PointXY;
+import com.hoang.util_interfaces.ColorOfComponent;
+import com.hoang.util_interfaces.DrawableOnCanvas;
 
 public class LineComponent implements DrawableOnCanvas {
     private PointXY firstPoint, secondPoint;
