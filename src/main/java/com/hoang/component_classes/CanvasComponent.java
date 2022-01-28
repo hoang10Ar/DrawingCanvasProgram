@@ -1,9 +1,16 @@
 package com.hoang.component_classes;
 
+import com.hoang.change_on_canvas.ChangeByCanvasCommand;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class CanvasComponent implements DrawableOnCanvas {
     private int canvasWidth, canvasHeight;
     private String[][] canvasMatrix;
@@ -15,6 +22,17 @@ public class CanvasComponent implements DrawableOnCanvas {
         this.canvasMatrix = new String[this.canvasHeight + 2][this.canvasWidth + 2];
 
         makeEmptyCanvas();
+    }
+
+    public CanvasComponent(CanvasComponent canvas) {
+        this(canvas.canvasWidth, canvas.canvasHeight);
+
+        for(int xCoordinate = 1; xCoordinate <= canvas.canvasWidth; xCoordinate++) {
+            for(int yCoordinate = 1; yCoordinate <= canvas.canvasHeight; yCoordinate++) {
+                String color = canvas.getColorAtPoint(xCoordinate, yCoordinate);
+                this.setColorAtPoint(xCoordinate, yCoordinate, color);
+            }
+        }
     }
 
     private void makeEmptyCanvas() {
@@ -133,16 +151,11 @@ public class CanvasComponent implements DrawableOnCanvas {
         return "Canvas: width = " + this.canvasWidth + ", height = " + this.canvasHeight;
     }
 
-    public int getCanvasWidth() {
-        return this.canvasWidth;
-    }
-
-    public int getCanvasHeight() {
-        return this.canvasHeight;
-    }
-
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
+        String command = "C " + this.canvasWidth + " " + this.canvasHeight;
+        HistoryComponent.addHistory(new ChangeByCanvasCommand(command));
+
         canvas.canvasWidth = this.canvasWidth;
         canvas.canvasHeight = this.canvasHeight;
         canvas.canvasMatrix = new String[canvas.canvasHeight + 2][canvas.canvasWidth + 2];

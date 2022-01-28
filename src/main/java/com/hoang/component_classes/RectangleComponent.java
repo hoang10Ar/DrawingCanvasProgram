@@ -1,20 +1,22 @@
 package com.hoang.component_classes;
 
+import com.hoang.change_on_canvas.ChangeByRectangleCommand;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class RectangleComponent implements DrawableOnCanvas {
     private PointXY topLeftPoint, bottomRightPoint;
 
     public RectangleComponent(int x1, int y1, int x2, int y2) {
         topLeftPoint = new PointXY(x1, y1);
         bottomRightPoint = new PointXY(x2, y2);
-    }
-
-    public RectangleComponent(PointXY topLeftPo, PointXY bottomRightPo) {
-        topLeftPoint = new PointXY(topLeftPo);
-        bottomRightPoint = new PointXY(bottomRightPo);
     }
 
     public String toString() {
@@ -25,6 +27,10 @@ public class RectangleComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         if(canvas.isHavePoint(topLeftPoint) && canvas.isHavePoint(bottomRightPoint)) {
+            String command = "R " + topLeftPoint.getXCoordinate() + " " + topLeftPoint.getYCoordinate()
+                    + " " + bottomRightPoint.getXCoordinate() + " " + bottomRightPoint.getYCoordinate();
+            HistoryComponent.addHistory(new ChangeByRectangleCommand(command));
+
             drawLeftBorderOnCanvas(canvas);
             drawRightBorderOnCanvas(canvas);
             drawTopBorderOnCanvas(canvas);

@@ -1,21 +1,22 @@
 package com.hoang.component_classes;
 
+import com.hoang.change_on_canvas.ChangeByBucketFillCommand;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.DrawableOnCanvas;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.LinkedList;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class BucketFillComponent implements DrawableOnCanvas {
     private PointXY startPoint;
-
     private String newColor;
 
     public BucketFillComponent(int x, int y, String color) {
         startPoint = new PointXY(x, y);
-        newColor = color;
-    }
-
-    public BucketFillComponent(PointXY po, String color) {
-        startPoint = new PointXY(po);
         newColor = color;
     }
 
@@ -27,6 +28,9 @@ public class BucketFillComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         if(canvas.isHavePoint(startPoint)) {
+            String command = "B " + startPoint.getXCoordinate() + " " + startPoint.getYCoordinate()
+                    + " " + newColor;
+            HistoryComponent.addHistory(new ChangeByBucketFillCommand(command));
             fillOnCanvas(canvas);
         }
     }
@@ -45,6 +49,7 @@ public class BucketFillComponent implements DrawableOnCanvas {
             }
         };
         pointList.addLast(startPoint);
+        pointHaveBeenInList[startPoint.getXCoordinate()][startPoint.getYCoordinate()] = true;
         while(pointList.size() > 0) {
             PointXY firstPoint = pointList.removeFirst();
             can.setColorAtPoint(firstPoint, newColor);

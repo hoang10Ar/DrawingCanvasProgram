@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.hoang.AppTest" time="0.026" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.hoang.AppTest" time="0.024" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\test-classes;C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\classes;C:\Users\HP\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\HP\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
+    <property name="java.class.path" value="C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\test-classes;C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\classes;C:\Users\HP\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\HP\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\HP\.m2\repository\org\projectlombok\lombok\1.18.22\lombok-1.18.22.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="I:\HOANG\Java\JDK_17.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\HP\AppData\Local\Temp\surefire14758266107115155364\surefirebooter1011886357106171046.jar C:\Users\HP\AppData\Local\Temp\surefire14758266107115155364 2022-01-21T18-54-11_087-jvmRun1 surefire12081851053604004800tmp surefire_0986903818258721672tmp"/>
+    <property name="sun.java.command" value="C:\Users\HP\AppData\Local\Temp\surefire18028874578362329110\surefirebooter11545183779950923983.jar C:\Users\HP\AppData\Local\Temp\surefire18028874578362329110 2022-01-29T00-02-47_091-jvmRun1 surefire8244284561400131160tmp surefire_016796686748843387919tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\test-classes;C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\classes;C:\Users\HP\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\HP\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\test-classes;C:\Users\HP\Desktop\GitRepo\DrawingCanvasProgram\DrawingCanvasProgram\target\classes;C:\Users\HP\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\HP\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\HP\.m2\repository\org\projectlombok\lombok\1.18.22\lombok-1.18.22.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\HP"/>
     <property name="user.language" value="en"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\HP\AppData\Local\Temp\surefire14758266107115155364\surefirebooter1011886357106171046.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\HP\AppData\Local\Temp\surefire18028874578362329110\surefirebooter11545183779950923983.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.1+12-LTS-39"/>

@@ -1,20 +1,22 @@
 package com.hoang.component_classes;
 
+import com.hoang.change_on_canvas.ChangeByLineCommand;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class LineComponent implements DrawableOnCanvas {
     private PointXY firstPoint, secondPoint;
 
     public LineComponent(int x1, int y1, int x2, int y2) {
         firstPoint = new PointXY(x1, y1);
         secondPoint = new PointXY(x2, y2);
-    }
-
-    public LineComponent(PointXY point1, PointXY point2) {
-        firstPoint = new PointXY(point1);
-        secondPoint = new PointXY(point2);
     }
 
     public String toString() {
@@ -25,6 +27,10 @@ public class LineComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         if(isLineInsideCanvas(canvas)) {
+            String command = "L " + firstPoint.getXCoordinate() + " " + firstPoint.getYCoordinate()
+                    + " " + secondPoint.getXCoordinate() + " " + secondPoint.getYCoordinate();
+            HistoryComponent.addHistory(new ChangeByLineCommand(command));
+
             if(isVerticalLine()) {
                 drawVerticalLineOnCanvas(canvas);
             } else if(isHorizontalLine()) {
