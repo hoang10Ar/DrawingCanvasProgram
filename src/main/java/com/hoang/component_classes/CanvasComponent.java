@@ -6,11 +6,9 @@ import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
-@Setter
 public class CanvasComponent implements DrawableOnCanvas {
     private int canvasWidth, canvasHeight;
     private String[][] canvasMatrix;
@@ -22,6 +20,17 @@ public class CanvasComponent implements DrawableOnCanvas {
         this.canvasMatrix = new String[this.canvasHeight + 2][this.canvasWidth + 2];
 
         makeEmptyCanvas();
+    }
+
+    public CanvasComponent(String[][] matrix) {
+        this(matrix[0].length - 2, matrix.length - 2);
+
+        for(int xCoordinate = 1; xCoordinate <= this.canvasWidth; xCoordinate++) {
+            for(int yCoordinate = 1; yCoordinate <= this.canvasHeight; yCoordinate++) {
+                String color = matrix[yCoordinate][xCoordinate];
+                this.setColorAtPoint(xCoordinate, yCoordinate, color);
+            }
+        }
     }
 
     public CanvasComponent(CanvasComponent canvas) {
@@ -89,7 +98,18 @@ public class CanvasComponent implements DrawableOnCanvas {
     }
 
     public void setColorAtPoint(int xCoordinate, int yCoordinate, String color) {
-        this.canvasMatrix[yCoordinate][xCoordinate] = color;
+        if(isHavePoint(xCoordinate, yCoordinate)) {
+            this.canvasMatrix[yCoordinate][xCoordinate] = color;
+        }
+    }
+
+    public boolean isHavePoint(int xCoordinate, int yCoordinate) {
+        return ((xCoordinate >= 0) && (xCoordinate <= this.canvasWidth)
+                && (yCoordinate >= 0) && (yCoordinate <= this.canvasHeight));
+    }
+
+    public boolean isHavePoint(PointXY po) {
+        return isHavePoint(po.getXCoordinate(), po.getYCoordinate());
     }
 
     public String getColorAtPoint(PointXY po) {
@@ -111,15 +131,6 @@ public class CanvasComponent implements DrawableOnCanvas {
         }
 
         return color;
-    }
-
-    public boolean isHavePoint(PointXY po) {
-        return isHavePoint(po.getXCoordinate(), po.getYCoordinate());
-    }
-
-    public boolean isHavePoint(int xCoordinate, int yCoordinate) {
-        return ((xCoordinate >= 0) && (xCoordinate <= this.canvasWidth)
-        && (yCoordinate >= 0) && (yCoordinate <= this.canvasHeight));
     }
 
     private boolean isLeftBorderHavePoint(int xCoordinate, int yCoordinate) {
@@ -151,6 +162,20 @@ public class CanvasComponent implements DrawableOnCanvas {
         return "Canvas: width = " + this.canvasWidth + ", height = " + this.canvasHeight;
     }
 
+    public boolean isEqual(CanvasComponent can) {
+        if(can.canvasWidth == this.canvasWidth && can.canvasHeight == this.canvasHeight) {
+            for(int xCoor = 0; xCoor < this.canvasWidth + 2; xCoor++) {
+                for(int yCoor = 0; yCoor < this.canvasHeight + 2; yCoor++) {
+                    if(!can.getColorAtPoint(xCoor, yCoor).equals(this.getColorAtPoint(xCoor, yCoor))) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         String command = "C " + this.canvasWidth + " " + this.canvasHeight;
@@ -158,7 +183,6 @@ public class CanvasComponent implements DrawableOnCanvas {
 
         canvas.canvasWidth = this.canvasWidth;
         canvas.canvasHeight = this.canvasHeight;
-        canvas.canvasMatrix = new String[canvas.canvasHeight + 2][canvas.canvasWidth + 2];
-        canvas.makeEmptyCanvas();
+        canvas.canvasMatrix = this.canvasMatrix;
     }
 }

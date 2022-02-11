@@ -42,7 +42,7 @@ public class CommandParser {
     }
 
     public static String[] getArgumentsInCommand(String command) {
-        return command.split(" ");
+        return command.trim().split(" ");
     }
 
     private static LineComponent getLineComponentByParsingCommand(String command) {

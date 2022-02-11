@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
 public class HistoryComponent implements NonDrawableOnCanvas {
     private static List<ChangeByCommand> commandsList = new ArrayList<>();
 
+    public static List<ChangeByCommand> getHistoryList() {
+        return commandsList;
+    }
+
     public static void addHistory(ChangeByCommand change) {
         commandsList.add(change);
     }

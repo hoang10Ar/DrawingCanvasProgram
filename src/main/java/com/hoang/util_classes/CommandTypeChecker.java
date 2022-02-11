@@ -2,7 +2,7 @@ package com.hoang.util_classes;
 
 public class CommandTypeChecker {
     public static boolean isNullCommand(String command) {
-        return (command == null || command.length() == 0);
+        return (command == null || command.length() == 0 || command.trim().length() == 0);
     }
 
     public static boolean isCanvasCommand(String command) {
@@ -79,28 +79,28 @@ public class CommandTypeChecker {
         String[] arguments = CommandParser.getArgumentsInCommand(command);
 
         return ((arguments.length == 4) && arguments[0].equals("B")
-                && isPositiveIntegerString(arguments[1])
-                && isPositiveIntegerString(arguments[2]) && (arguments[3].length() == 1));
+                && isNonNegativeIntegerString(arguments[1])
+                && isNonNegativeIntegerString(arguments[2]) && (arguments[3].length() == 1));
     }
 
     public static boolean isQuitCommand(String command) {
-        return command.equals("Q");
+        return command.trim().equals("Q");
     }
 
     public static boolean isListCommand(String command) {
-        return (command.equals("L"));
+        return (command.trim().equals("L"));
     }
 
     public static boolean isHistoryCommand(String command) {
-        return (command.equals("H"));
+        return (command.trim().equals("H"));
     }
 
     public static boolean isUndoCommand(String command) {
-        return (command.equals("U"));
+        return (command.trim().equals("U"));
     }
 
     public static boolean isViewCanvasCommand(String command) {
-        return (command.equals("V"));
+        return (command.trim().equals("V"));
     }
 
     public static boolean isJumpCommand(String command) {

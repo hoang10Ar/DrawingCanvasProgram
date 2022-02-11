@@ -33,7 +33,7 @@ public class ListComponent implements NonDrawableOnCanvas {
         addDefinition("ViewCanvas", "V", "Should view the current canvas.");
     }
 
-    public static void addDefinition(String id, String structure, String description) {
+    private static void addDefinition(String id, String structure, String description) {
         definitionList.add(new CommandDefinition(id, structure, description));
     }
 
