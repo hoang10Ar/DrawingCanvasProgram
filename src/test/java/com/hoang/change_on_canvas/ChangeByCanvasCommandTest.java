@@ -24,30 +24,18 @@ public class ChangeByCanvasCommandTest {
     }
 
     @Test
-    public void testUndoChange() {
-        CanvasComponent targetCanvas;
-        CanvasComponent canvas = new CanvasComponent(3, 2);
-        canvas.drawOnCanvas(DrawingProgram.getMainCanvas());
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-"},
-                {"|", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", "|"},
-                {"-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
+    public void whenOldCanvasRestoredThenUndoChangeSuccess() {
+        CanvasComponent oldCanvas, newCanvas;
+
+        oldCanvas = new CanvasComponent(DrawingProgram.getMainCanvas());
+
+        newCanvas = new CanvasComponent(3, 2);
+        newCanvas.drawOnCanvas(DrawingProgram.getMainCanvas());
 
         ChangeByCommand lastChange = HistoryComponent.getAndRemoveLastHistory();
         assertTrue(lastChange.getCommand().equals("C 3 2"));
 
         lastChange.undoChange();
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", "x", "x", "x", " ", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", " ", "x", " ", "x", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
+        assertTrue((DrawingProgram.getMainCanvas()).isEqual(oldCanvas));
     }
 }

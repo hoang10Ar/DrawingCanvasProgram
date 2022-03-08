@@ -6,85 +6,91 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CanvasComponentTest {
     @Test
-    public void testIsEqual() {
-        CanvasComponent inputCanvas, testCanvas;
+    public void whenTwoCanvasesHaveSameContentThenCanvasesEqual() {
+        CanvasComponent firstCanvas, secondCanvas;
 
-        inputCanvas = new CanvasComponent(5, 2);
-        testCanvas = new CanvasComponent(new String[][] {
+        firstCanvas = new CanvasComponent(5, 2);
+        secondCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertTrue(inputCanvas.isEqual(testCanvas));
+        assertTrue(firstCanvas.isEqual(secondCanvas));
 
-        inputCanvas = new CanvasComponent(5, 2);
-        testCanvas = new CanvasComponent(new String[][] {
+
+        firstCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(inputCanvas.isEqual(testCanvas));
+        secondCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", " ", " ", " ", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        assertTrue(firstCanvas.isEqual(secondCanvas));
+    }
 
-        inputCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", "H", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", " ", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        testCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", "H", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", " ", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue(inputCanvas.isEqual(testCanvas));
+    @Test
+    public void whenTwoCanvasesHaveDifferentContentThenCanvaseNotEqual() {
+        CanvasComponent firstCanvas, secondCanvas;
 
-        inputCanvas = new CanvasComponent(new String[][] {
+        firstCanvas = new CanvasComponent(5, 2);
+        secondCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        testCanvas = new CanvasComponent(new String[][] {
+        assertFalse(firstCanvas.isEqual(secondCanvas));
+
+        firstCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", " ", " ", " ", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        secondCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "h", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(inputCanvas.isEqual(testCanvas));
+        assertFalse(firstCanvas.isEqual(secondCanvas));
 
-        inputCanvas = new CanvasComponent(new String[][] {
+        firstCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        testCanvas = new CanvasComponent(new String[][] {
+        secondCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(inputCanvas.isEqual(testCanvas));
+        assertFalse(firstCanvas.isEqual(secondCanvas));
 
-        inputCanvas = new CanvasComponent(new String[][] {
+        firstCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        testCanvas = new CanvasComponent(new String[][] {
+        secondCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(inputCanvas.isEqual(testCanvas));
+        assertFalse(firstCanvas.isEqual(secondCanvas));
     }
 
     @Test
-    public void testSetColorAtPoint() {
+    public void whenSetColorAtPointInsideCanvasThenCanvasChanged() {
         CanvasComponent actualCanvas, targetCanvas;
 
         actualCanvas = new CanvasComponent(5, 2);
@@ -97,56 +103,52 @@ public class CanvasComponentTest {
         });
         assertTrue(actualCanvas.isEqual(targetCanvas));
 
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(2, 1, "H");
-        targetCanvas = new CanvasComponent(new String[][] {
+        actualCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", " ", "H", " ", " ", "|"},
+                {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(actualCanvas.isEqual(targetCanvas));
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(2, 1, "H");
+        actualCanvas.setColorAtPoint(4, 2, "k");
         targetCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", "h", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", " ", " ", "|"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", " ", " ", "k", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        assertFalse(actualCanvas.isEqual(targetCanvas));
-
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", " ", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", " ", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(0, 2, "H");
-        assertTrue(actualCanvas.isEqual(targetCanvas));
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(2, 0, "H");
-        assertTrue(actualCanvas.isEqual(targetCanvas));
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(2, -1, "H");
-        assertTrue(actualCanvas.isEqual(targetCanvas));
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(-2, 1, "H");
-        assertTrue(actualCanvas.isEqual(targetCanvas));
-
-        actualCanvas = new CanvasComponent(5, 2);
-        actualCanvas.setColorAtPoint(-2, -1, "H");
         assertTrue(actualCanvas.isEqual(targetCanvas));
     }
 
     @Test
-    public void testGetColorAtPoint() {
+    public void whenSetColorAtPointOutsideCanvasThenCanvasNotChanged() {
+        CanvasComponent oldCanvas, newCanvas;
+
+        oldCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "x", " ", " ", " ", "|"},
+                {"|", " ", " ", "x", "x", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        newCanvas = new CanvasComponent(oldCanvas);
+
+        newCanvas.setColorAtPoint(0, 2, "H");
+        assertTrue(newCanvas.isEqual(oldCanvas));
+
+        newCanvas.setColorAtPoint(2, 0, "H");
+        assertTrue(newCanvas.isEqual(oldCanvas));
+
+        newCanvas.setColorAtPoint(2, -1, "H");
+        assertTrue(newCanvas.isEqual(oldCanvas));
+
+        newCanvas.setColorAtPoint(-2, 1, "H");
+        assertTrue(newCanvas.isEqual(oldCanvas));
+
+        newCanvas.setColorAtPoint(-2, -1, "H");
+        assertTrue(newCanvas.isEqual(oldCanvas));
+    }
+
+    @Test
+    public void whenGetColorAtPointInsideCanvasThenColorReturned() {
         CanvasComponent canvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
@@ -174,6 +176,17 @@ public class CanvasComponentTest {
         actual = canvas.getColorAtPoint(3, 2);
         expect = " ";
         assertNotEquals(actual, expect);
+    }
+
+    @Test
+    public void whenGetColorAtPointAtBorderCanvasThenBorderColorReturned() {
+        CanvasComponent canvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", "x", "x", "x", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        String expect, actual;
 
         actual = canvas.getColorAtPoint(0, 0);
         expect = ColorOfComponent.TOP_BORDER_CANVAS_COLOR;
@@ -222,22 +235,33 @@ public class CanvasComponentTest {
         actual = canvas.getColorAtPoint(6, 0);
         expect = ColorOfComponent.RIGHT_BORDER_CANVAS_COLOR;
         assertNotEquals(actual, expect);
-
-        actual = canvas.getColorAtPoint(2, -1);
-        assertNull(actual);
-
-        actual = canvas.getColorAtPoint(-2, 1);
-        assertNull(actual);
-
-        actual = canvas.getColorAtPoint(7, 2);
-        assertNull(actual);
-
-        actual = canvas.getColorAtPoint(2, 4);
-        assertNull(actual);
     }
 
     @Test
-    public void testIsHavePoint() {
+    public void whenGetColorAtPointOutsideCanvasThenNullReturned() {
+        CanvasComponent canvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", "x", "x", "x", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        String color;
+
+        color = canvas.getColorAtPoint(2, -1);
+        assertNull(color);
+
+        color = canvas.getColorAtPoint(-2, 1);
+        assertNull(color);
+
+        color = canvas.getColorAtPoint(7, 2);
+        assertNull(color);
+
+        color = canvas.getColorAtPoint(2, 4);
+        assertNull(color);
+    }
+
+    @Test
+    public void whenCoordinateBetweenZeroAndWidthHeightThenCanvasHasPoint() {
         CanvasComponent canvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
@@ -249,7 +273,18 @@ public class CanvasComponentTest {
         assertTrue(canvas.isHavePoint(0, 1));
         assertTrue(canvas.isHavePoint(1, 0));
         assertTrue(canvas.isHavePoint(1, 1));
-        assertTrue(canvas.isHavePoint(4, 2));
+        assertTrue(canvas.isHavePoint(5, 2));
+    }
+
+    @Test
+    public void whenCoordinateNotBetweenZeroAndWidthHeightThenCanvasNotHasPoint() {
+        CanvasComponent canvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "H", " ", " ", " ", "|"},
+                {"|", " ", "x", "x", "x", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+
         assertFalse(canvas.isHavePoint(-1, 2));
         assertFalse(canvas.isHavePoint(6, 2));
         assertFalse(canvas.isHavePoint(1, -2));
@@ -259,26 +294,31 @@ public class CanvasComponentTest {
     }
 
     @Test
-    public void testDrawOnCanvas() {
-        CanvasComponent currentCanvas, newCanvas, targetCanvas;
+    public void whenDrawCanvasOnAnotherCanvasThenOldCanvasRemoved() {
+        CanvasComponent oldCanvas, newCanvas, targetCanvas;
 
-        currentCanvas = new CanvasComponent(new String[][] {
+        oldCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", "x", "x", "x", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-        newCanvas = new CanvasComponent(3, 2);
-        newCanvas.drawOnCanvas(currentCanvas);
+        newCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-"},
+                {"|", " ", " ", " ", "|"},
+                {"|", "A", " ", " ", "|"},
+                {"-", "-", "-", "-", "-"}
+        });
+        newCanvas.drawOnCanvas(oldCanvas);
         targetCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-"},
                 {"|", " ", " ", " ", "|"},
-                {"|", " ", " ", " ", "|"},
+                {"|", "A", " ", " ", "|"},
                 {"-", "-", "-", "-", "-"}
         });
-        assertTrue(currentCanvas.isEqual(targetCanvas));
+        assertTrue(oldCanvas.isEqual(targetCanvas));
 
-        currentCanvas = new CanvasComponent(new String[][] {
+        oldCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", "H", " ", " ", " ", "|"},
                 {"|", " ", "x", "x", "x", " ", "|"},
@@ -292,7 +332,7 @@ public class CanvasComponentTest {
                 {"|", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-"}
         });
-        newCanvas.drawOnCanvas(currentCanvas);
+        newCanvas.drawOnCanvas(oldCanvas);
         targetCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-"},
                 {"|", "A", "B", "C", " ", "|"},
@@ -301,6 +341,6 @@ public class CanvasComponentTest {
                 {"|", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-"}
         });
-        assertTrue(currentCanvas.isEqual(targetCanvas));
+        assertTrue(oldCanvas.isEqual(targetCanvas));
     }
 }

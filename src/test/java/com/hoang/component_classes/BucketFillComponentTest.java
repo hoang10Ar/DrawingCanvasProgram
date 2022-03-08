@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BucketFillComponentTest {
     @Test
-    public void testDrawOnCanvas() {
+    public void whenPointInsideCanvasThenBucketFillSuccess() {
         CanvasComponent actualCanvas, targetCanvas;
         actualCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
@@ -66,5 +66,29 @@ public class BucketFillComponentTest {
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
         assertTrue(actualCanvas.isEqual(targetCanvas));
+    }
+
+    @Test
+    public void whenPointOutsideCanvasThenBucketFillFail() {
+        CanvasComponent oldCanvas, newCanvas;
+        oldCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", "x", "x", " ", " ", "|"},
+                {"|", " ", " ", "x", " ", " ", "|"},
+                {"|", " ", " ", "x", "x", " ", "|"},
+                {"|", " ", " ", " ", " ", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        DrawingProgram.setMainCanvas(oldCanvas);
+        newCanvas = new CanvasComponent(oldCanvas);
+        BucketFillComponent bucketFill;
+
+        bucketFill = new BucketFillComponent(3, -1, "O");
+        bucketFill.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
+
+        bucketFill = new BucketFillComponent(6, 2, "A");
+        bucketFill.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
     }
 }

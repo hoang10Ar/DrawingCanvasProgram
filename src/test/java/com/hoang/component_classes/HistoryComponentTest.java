@@ -19,38 +19,46 @@ public class HistoryComponentTest {
     }
 
     @Test
-    public void testAddHistory() {
+    public void whenLastHistoryEqualRecentlyHistoryThenAddHistorySuccess() {
+        List<ChangeByCommand> historyList = HistoryComponent.getHistoryList();
+
         HistoryComponent.addHistory(new ChangeByLineCommand("L 1 1 3 1"));
         assertEquals(1, HistoryComponent.getHistoryList().size());
+        assertTrue(historyList.get(0).getCommand().equals("L 1 1 3 1"));
+
         HistoryComponent.addHistory(new ChangeByRectangleCommand("R 2 2 4 4"));
         assertEquals(2, HistoryComponent.getHistoryList().size());
+        assertTrue(historyList.get(1).getCommand().equals("R 2 2 4 4"));
+
         HistoryComponent.addHistory(new ChangeByBucketFillCommand("B 2 3 h"));
         assertEquals(3, HistoryComponent.getHistoryList().size());
-
-        List<ChangeByCommand> historyList = HistoryComponent.getHistoryList();
-        assertTrue(historyList.get(0).getCommand().equals("L 1 1 3 1"));
-        assertTrue(historyList.get(1).getCommand().equals("R 2 2 4 4"));
         assertTrue(historyList.get(2).getCommand().equals("B 2 3 h"));
     }
 
     @Test
-    public void testGetLastHistory() {
+    public void whenLastHistoryEqualRecentlyHistoryThenGetLastHistorySuccess() {
         HistoryComponent.addHistory(new ChangeByLineCommand("L 1 1 3 1"));
         HistoryComponent.addHistory(new ChangeByRectangleCommand("R 2 2 4 4"));
         HistoryComponent.addHistory(new ChangeByBucketFillCommand("B 2 3 h"));
+
         assertTrue(HistoryComponent.getLastHistory().getCommand().equals("B 2 3 h"));
         assertEquals(3, HistoryComponent.getHistoryList().size());
+    }
 
+    @Test
+    public void whenHistoryEmptyThenLastHistoryIsNull() {
         HistoryComponent.getHistoryList().clear();
         assertNull(HistoryComponent.getLastHistory());
     }
 
     @Test
-    public void testGetAndRemoveLastHistory() {
+    public void whenLastHistoryEqualSecondRecentlyHistoryThenGetAndRemoveLastHistorySuccess() {
         HistoryComponent.addHistory(new ChangeByLineCommand("L 1 1 3 1"));
         HistoryComponent.addHistory(new ChangeByRectangleCommand("R 2 2 4 4"));
         HistoryComponent.addHistory(new ChangeByBucketFillCommand("B 2 3 h"));
-        assertTrue(HistoryComponent.getAndRemoveLastHistory().getCommand().equals("B 2 3 h"));
+
+        HistoryComponent.getAndRemoveLastHistory();
+
         assertEquals(2, HistoryComponent.getHistoryList().size());
         assertTrue(HistoryComponent.getLastHistory().getCommand().equals("R 2 2 4 4"));
 

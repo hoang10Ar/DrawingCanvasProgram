@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommandTypeCheckerTest {
     @Test
-    public void testIsNullCommand() {
+    public void whenEnterNullOrEmptyStringThenReturnNullCommandType() {
         assertTrue(CommandTypeChecker.isNullCommand(null));
         assertTrue(CommandTypeChecker.isNullCommand(""));
         assertTrue(CommandTypeChecker.isNullCommand(" "));
@@ -14,9 +14,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsCanvasCommand() {
+    public void whenEnterTwoPositiveIntegersToCreateCanvasThenSuccess() {
         assertTrue(CommandTypeChecker.isCanvasCommand("C 2 3"));
         assertTrue(CommandTypeChecker.isCanvasCommand(" C 1234 4567  "));
+    }
+
+    @Test
+    public void whenNotEnterTwoPositiveIntegersToCreateCanvasThenFail() {
         assertFalse(CommandTypeChecker.isCanvasCommand(""));
         assertFalse(CommandTypeChecker.isCanvasCommand("C"));
         assertFalse(CommandTypeChecker.isCanvasCommand("C h"));
@@ -31,10 +35,14 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsLineCommand() {
+    public void whenEnterTwoValidPointsToCreateLineThenSuccess() {
         assertTrue(CommandTypeChecker.isLineCommand("L 2 3 12 3"));
         assertTrue(CommandTypeChecker.isLineCommand(" L 234 3 234 12  "));
         assertTrue(CommandTypeChecker.isLineCommand("L 0 0 6 0"));
+    }
+
+    @Test
+    public void whenNotEnterTwoValidPointsToCreateLineThenFail() {
         assertFalse(CommandTypeChecker.isLineCommand(""));
         assertFalse(CommandTypeChecker.isLineCommand("L"));
         assertFalse(CommandTypeChecker.isLineCommand("L 2"));
@@ -50,9 +58,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsRectangleCommand() {
+    public void whenEnterTwoValidPointsToCreateRectangleThenSuccess() {
         assertTrue(CommandTypeChecker.isRectangleCommand("R 2 3 6 7"));
         assertTrue(CommandTypeChecker.isRectangleCommand(" R 0 123 124 678  "));
+    }
+
+    @Test
+    public void whenNotEnterTwoValidPointsToCreateRectangleThenFail() {
         assertFalse(CommandTypeChecker.isRectangleCommand(""));
         assertFalse(CommandTypeChecker.isRectangleCommand("R"));
         assertFalse(CommandTypeChecker.isRectangleCommand("R 2"));
@@ -71,11 +83,15 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsBucketFillCommand() {
+    public void whenEnterOneValidPointAndColorToBucketFillThenSuccess() {
         assertTrue(CommandTypeChecker.isBucketFillCommand("B 2 3 h"));
         assertTrue(CommandTypeChecker.isBucketFillCommand(" B 123 456 @  "));
         assertTrue(CommandTypeChecker.isBucketFillCommand("B 2 3 1"));
         assertTrue(CommandTypeChecker.isBucketFillCommand("B 0 3 B"));
+    }
+
+    @Test
+    public void whenNotEnterOneValidPointAndColorToBucketFillThenFail() {
         assertFalse(CommandTypeChecker.isBucketFillCommand(""));
         assertFalse(CommandTypeChecker.isBucketFillCommand("B"));
         assertFalse(CommandTypeChecker.isBucketFillCommand("B 2"));
@@ -90,9 +106,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsQuitCommand() {
+    public void whenEnterLetterQToQuitThenSuccess() {
         assertTrue(CommandTypeChecker.isQuitCommand("Q"));
         assertTrue(CommandTypeChecker.isQuitCommand(" Q    "));
+    }
+
+    @Test
+    public void whenNotEnterLetterQToQuitThenFail() {
         assertFalse(CommandTypeChecker.isQuitCommand(""));
         assertFalse(CommandTypeChecker.isQuitCommand("Q 1"));
         assertFalse(CommandTypeChecker.isQuitCommand("Q h"));
@@ -100,9 +120,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsListCommand() {
+    public void whenEnterLetterLToListThenSuccess() {
         assertTrue(CommandTypeChecker.isListCommand("L"));
         assertTrue(CommandTypeChecker.isListCommand(" L    "));
+    }
+
+    @Test
+    public void whenNotEnterLetterLToListThenFail() {
         assertFalse(CommandTypeChecker.isListCommand(""));
         assertFalse(CommandTypeChecker.isListCommand("L 1"));
         assertFalse(CommandTypeChecker.isListCommand("L h"));
@@ -110,9 +134,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsHistoryCommand() {
+    public void whenEnterLetterHToListHistoryThenSuccess() {
         assertTrue(CommandTypeChecker.isHistoryCommand("H"));
         assertTrue(CommandTypeChecker.isHistoryCommand(" H    "));
+    }
+
+    @Test
+    public void whenNotEnterLetterHToListHistoryThenFail() {
         assertFalse(CommandTypeChecker.isHistoryCommand(""));
         assertFalse(CommandTypeChecker.isHistoryCommand("H 1"));
         assertFalse(CommandTypeChecker.isHistoryCommand("H h"));
@@ -120,9 +148,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsUndoCommand() {
+    public void whenEnterLetterUToUndoThenSuccess() {
         assertTrue(CommandTypeChecker.isUndoCommand("U"));
         assertTrue(CommandTypeChecker.isUndoCommand(" U    "));
+    }
+
+    @Test
+    public void whenNotEnterLetterUToUndoThenFail() {
         assertFalse(CommandTypeChecker.isUndoCommand(""));
         assertFalse(CommandTypeChecker.isUndoCommand("U 1"));
         assertFalse(CommandTypeChecker.isUndoCommand("U h"));
@@ -130,9 +162,13 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsViewCanvasCommand() {
+    public void whenEnterLetterVToViewCurrentCanvasThenSuccess() {
         assertTrue(CommandTypeChecker.isViewCanvasCommand("V"));
         assertTrue(CommandTypeChecker.isViewCanvasCommand(" V    "));
+    }
+
+    @Test
+    public void whenNotEnterLetterVToViewCurrentCanvasThenFail() {
         assertFalse(CommandTypeChecker.isViewCanvasCommand(""));
         assertFalse(CommandTypeChecker.isViewCanvasCommand("V 1"));
         assertFalse(CommandTypeChecker.isViewCanvasCommand("V h"));
@@ -140,11 +176,15 @@ public class CommandTypeCheckerTest {
     }
 
     @Test
-    public void testIsJumpCommand() {
+    public void whenEnterOneIDStringToJumpBackThenSuccess() {
         assertTrue(CommandTypeChecker.isJumpCommand("J 1DSA3-2xa#1"));
         assertTrue(CommandTypeChecker.isJumpCommand(" J 123   "));
         assertTrue(CommandTypeChecker.isJumpCommand("J h"));
         assertTrue(CommandTypeChecker.isJumpCommand("J J"));
+    }
+
+    @Test
+    public void whenNotEnterOneIDStringToJumpBackThenFail() {
         assertFalse(CommandTypeChecker.isJumpCommand(""));
         assertFalse(CommandTypeChecker.isJumpCommand("J"));
         assertFalse(CommandTypeChecker.isJumpCommand("j 1DSA3-2xa#1"));

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommandParserTest {
     @Test
-    public void testGetComponentByParsingCommand() {
+    public void whenEnterValidCommandThenReturnCorrespondObject() {
         assertTrue(CommandParser.getComponentByParsingCommand(" C 2 3 ")
                 instanceof CanvasComponent);
         assertTrue(CommandParser.getComponentByParsingCommand(" L 1 2 1 3 ")
@@ -27,7 +27,10 @@ public class CommandParserTest {
                 instanceof ViewCanvasComponent);
         assertTrue(CommandParser.getComponentByParsingCommand(" J 1A ")
                 instanceof JumpComponent);
+    }
 
+    @Test
+    public void whenNotEnterValidCommandThenReturnNull() {
         assertNull(CommandParser.getComponentByParsingCommand(""));
         assertNull(CommandParser.getComponentByParsingCommand("C 1"));
         assertNull(CommandParser.getComponentByParsingCommand("L 1 2 3"));
@@ -45,12 +48,12 @@ public class CommandParserTest {
     }
 
     @Test
-    public void testGetArgumentsInCommand() {
+    public void whenGetFullArgumentsSeparatedBySpaceInCommandThenSuccess() {
         assertArrayEquals(CommandParser.getArgumentsInCommand(" H"),
-                new String[] { "H"});
+                new String[] { "H" });
         assertArrayEquals(CommandParser.getArgumentsInCommand("A 1 2 "),
-                            new String[] { "A", "1", "2"});
+                            new String[] { "A", "1", "2" });
         assertArrayEquals(CommandParser.getArgumentsInCommand("  bc -1.2 @ # "),
-                new String[] { "bc", "-1.2", "@", "#"});
+                new String[] { "bc", "-1.2", "@", "#" });
     }
 }

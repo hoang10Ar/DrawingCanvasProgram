@@ -17,10 +17,11 @@ public class UndoComponentTest {
     }
 
     @Test
-    public void testPerformFunction() {
+    public void whenEnterXCommandAndEnterUndoThenRemainXMinus1Command() {
         HistoryComponent.addHistory(new ChangeByLineCommand("L 1 1 3 1"));
         HistoryComponent.addHistory(new ChangeByRectangleCommand("R 2 2 4 4"));
         HistoryComponent.addHistory(new ChangeByBucketFillCommand("B 2 3 h"));
+
         assertTrue(HistoryComponent.getLastHistory().getCommand().equals("B 2 3 h"));
         assertEquals(3, HistoryComponent.getHistoryList().size());
 

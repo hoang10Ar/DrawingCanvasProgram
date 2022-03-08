@@ -5,9 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RectangleComponentTest {
     @Test
-    public void testDrawOnCanvas() {
+    public void whenDrawRectangleInsideCanvasThenCanvasDrawRectangle() {
         CanvasComponent actualCanvas, targetCanvas;
         RectangleComponent rectangle;
+
         actualCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
                 {"|", " ", " ", " ", " ", " ", "|"},
@@ -16,7 +17,6 @@ public class RectangleComponentTest {
                 {"|", " ", " ", " ", " ", " ", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
-
         rectangle = new RectangleComponent(2, 1, 4, 3);
         rectangle.drawOnCanvas(actualCanvas);
         targetCanvas = new CanvasComponent(new String[][] {
@@ -29,32 +29,53 @@ public class RectangleComponentTest {
         });
         assertTrue(actualCanvas.isEqual(targetCanvas));
 
-        rectangle = new RectangleComponent(0, 2, 2, 4);
+        actualCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", " ", "C", " ", " ", "|"},
+                {"|", "A", "B", " ", "D", " ", "|"},
+                {"|", " ", " ", " ", " ", "E", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        rectangle = new RectangleComponent(2, 0, 4, 3);
         rectangle.drawOnCanvas(actualCanvas);
         targetCanvas = new CanvasComponent(new String[][] {
                 {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", "x", "x", " ", "x", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", "x", "x", " ", " ", " ", "|"},
+                {"|", " ", "x", "C", "x", " ", "|"},
+                {"|", "A", "x", " ", "x", " ", "|"},
+                {"|", " ", "x", "x", "x", "E", "|"},
                 {"-", "-", "-", "-", "-", "-", "-"}
         });
         assertTrue(actualCanvas.isEqual(targetCanvas));
+    }
+
+    @Test
+    public void whenDrawRectangleOutsideCanvasThenCanvasNotDrawRectangle() {
+        CanvasComponent oldCanvas, newCanvas;
+        RectangleComponent rectangle;
+
+        oldCanvas = new CanvasComponent(new String[][] {
+                {"-", "-", "-", "-", "-", "-", "-"},
+                {"|", " ", " ", "H", "H", "H", "|"},
+                {"|", "x", " ", " ", " ", "H", "|"},
+                {"|", " ", "x", " ", "H", " ", "|"},
+                {"-", "-", "-", "-", "-", "-", "-"}
+        });
+        newCanvas = new CanvasComponent(oldCanvas);
 
         rectangle = new RectangleComponent(1, 1, 6, 2);
-        rectangle.drawOnCanvas(actualCanvas);
-        assertTrue(actualCanvas.isEqual(targetCanvas));
+        rectangle.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
 
         rectangle = new RectangleComponent(1, 1, 4, 5);
-        rectangle.drawOnCanvas(actualCanvas);
-        assertTrue(actualCanvas.isEqual(targetCanvas));
+        rectangle.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
 
         rectangle = new RectangleComponent(-1, 1, 4, 4);
-        rectangle.drawOnCanvas(actualCanvas);
-        assertTrue(actualCanvas.isEqual(targetCanvas));
+        rectangle.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
 
         rectangle = new RectangleComponent(1, 1, 4, -4);
-        rectangle.drawOnCanvas(actualCanvas);
-        assertTrue(actualCanvas.isEqual(targetCanvas));
+        rectangle.drawOnCanvas(newCanvas);
+        assertTrue(newCanvas.isEqual(oldCanvas));
     }
 }

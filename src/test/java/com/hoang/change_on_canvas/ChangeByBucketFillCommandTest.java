@@ -25,32 +25,18 @@ public class ChangeByBucketFillCommandTest {
     }
 
     @Test
-    public void testUndoChange() {
-        CanvasComponent targetCanvas;
+    public void whenOldAreaFilledRestoredThenUndoChangeSuccess() {
+        CanvasComponent oldCanvas;
+
+        oldCanvas = new CanvasComponent(DrawingProgram.getMainCanvas());
+
         BucketFillComponent bucketFill = new BucketFillComponent(5, 2, "H");
         bucketFill.drawOnCanvas(DrawingProgram.getMainCanvas());
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", "x", "x", "x", "H", "H", "|"},
-                {"|", " ", "x", "x", "x", "H", "|"},
-                {"|", " ", "x", " ", "x", "H", "|"},
-                {"|", " ", "x", "x", "x", "H", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
 
         ChangeByCommand lastChange = HistoryComponent.getAndRemoveLastHistory();
         assertTrue(lastChange.getCommand().equals("B 5 2 H"));
 
         lastChange.undoChange();
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", "x", "x", "x", " ", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", " ", "x", " ", "x", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
+        assertTrue((DrawingProgram.getMainCanvas()).isEqual(oldCanvas));
     }
 }

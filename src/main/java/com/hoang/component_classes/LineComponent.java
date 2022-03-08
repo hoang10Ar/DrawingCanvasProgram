@@ -26,7 +26,7 @@ public class LineComponent implements DrawableOnCanvas {
 
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
-        if(isLineInsideCanvas(canvas)) {
+        if(isLineValidOnCanvas(canvas)) {
             String command = "L " + firstPoint.getXCoordinate() + " " + firstPoint.getYCoordinate()
                     + " " + secondPoint.getXCoordinate() + " " + secondPoint.getYCoordinate();
             HistoryComponent.addHistory(new ChangeByLineCommand(command));
@@ -37,6 +37,11 @@ public class LineComponent implements DrawableOnCanvas {
                 drawHorizontalLineOnCanvas(canvas);
             }
         }
+    }
+
+    private boolean isLineValidOnCanvas(CanvasComponent canvas) {
+        return (isLineInsideCanvas(canvas) && (isVerticalLine()
+                || isHorizontalLine()));
     }
 
     private boolean isLineInsideCanvas(CanvasComponent canvas) {

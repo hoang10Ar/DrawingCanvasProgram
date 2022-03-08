@@ -25,32 +25,18 @@ public class ChangeByLineCommandTest {
     }
 
     @Test
-    public void testUndoChange() {
-        CanvasComponent targetCanvas;
+    public void whenOldLineRestoredThenUndoChangeSuccess() {
+        CanvasComponent oldCanvas;
+
+        oldCanvas = new CanvasComponent(DrawingProgram.getMainCanvas());
+
         LineComponent line = new LineComponent(1, 3, 4, 3);
         line.drawOnCanvas(DrawingProgram.getMainCanvas());
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", "x", "x", "x", " ", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", "x", "x", "x", "x", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
 
         ChangeByCommand lastChange = HistoryComponent.getAndRemoveLastHistory();
         assertTrue(lastChange.getCommand().equals("L 1 3 4 3"));
 
         lastChange.undoChange();
-        targetCanvas = new CanvasComponent(new String[][] {
-                {"-", "-", "-", "-", "-", "-", "-"},
-                {"|", "x", "x", "x", " ", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"|", " ", "x", " ", "x", " ", "|"},
-                {"|", " ", "x", "x", "x", " ", "|"},
-                {"-", "-", "-", "-", "-", "-", "-"}
-        });
-        assertTrue((DrawingProgram.getMainCanvas()).isEqual(targetCanvas));
+        assertTrue((DrawingProgram.getMainCanvas()).isEqual(oldCanvas));
     }
 }
