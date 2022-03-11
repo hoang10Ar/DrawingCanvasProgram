@@ -6,17 +6,21 @@ import com.hoang.util_classes.CommandParser;
 import com.hoang.util_classes.DateWithFormat;
 import com.hoang.util_classes.DrawingProgram;
 import com.hoang.util_interfaces.ValidComponent;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import java.util.UUID;
 
+@Component
+@Scope("prototype")
 public class ChangeByRectangleCommand extends ChangeByCommand {
     private String[] oldTopContent, oldBottomContent, oldLeftContent, oldRightContent;
 
-    public ChangeByRectangleCommand(String command) {
+    public ChangeByRectangleCommand(@Value("--") String command) {
         super(command, UUID.randomUUID().toString(), DateWithFormat.getDateWithDayNameAndDateAndTime());
-        findOldContentOnCanvas();
     }
 
-    private void findOldContentOnCanvas() {
+    public void findOldContentOnCanvas() {
         ValidComponent component = CommandParser.getComponentByParsingCommand(getCommand());
         RectangleComponent rectangleComponent = (RectangleComponent) component;
 

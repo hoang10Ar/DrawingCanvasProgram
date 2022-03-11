@@ -1,19 +1,28 @@
 package com.hoang.component_classes;
 
 import com.hoang.change_on_canvas.ChangeByCanvasCommand;
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Getter
+@Component
+@Scope("prototype")
 public class CanvasComponent implements DrawableOnCanvas {
     private int canvasWidth, canvasHeight;
     private String[][] canvasMatrix;
 
-    public CanvasComponent(int width, int height) {
+    @Autowired
+    public CanvasComponent(@Value("1") int width, @Value("1") int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
         // Canvas sẽ hiển thị thêm 2 cột ở đầu và cuối, 2 hàng ở đầu và cuối để tạo thành khung hình chữ nhật
@@ -176,10 +185,33 @@ public class CanvasComponent implements DrawableOnCanvas {
         return false;
     }
 
+    public void setCanvasMatrix(String[][] matrix) {
+        setWidthAndHeight(matrix[0].length - 2, matrix.length - 2);
+
+        for(int xCoordinate = 1; xCoordinate <= this.canvasWidth; xCoordinate++) {
+            for(int yCoordinate = 1; yCoordinate <= this.canvasHeight; yCoordinate++) {
+                String color = matrix[yCoordinate][xCoordinate];
+                this.setColorAtPoint(xCoordinate, yCoordinate, color);
+            }
+        }
+    }
+
+    public void setWidthAndHeight(int width, int height) {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.canvasMatrix = new String[this.canvasHeight + 2][this.canvasWidth + 2];
+
+        makeEmptyCanvas();
+    }
+
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         String command = "C " + this.canvasWidth + " " + this.canvasHeight;
-        HistoryComponent.addHistory(new ChangeByCanvasCommand(command));
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        ChangeByCanvasCommand change = (ChangeByCanvasCommand) appContext.getBean("changeByCanvasCommand");
+        change.setCommand(command);
+        change.findOldContentOnCanvas();
+        HistoryComponent.addHistory(change);
 
         canvas.canvasWidth = this.canvasWidth;
         canvas.canvasHeight = this.canvasHeight;

@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hoang.change_on_canvas.ChangeByRectangleCommandTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in com.hoang.change_on_canvas.ChangeByRectangleCommandTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in com.hoang.change_on_canvas.ChangeByRectangleCommandTest
+whenOldRectangleRestoredThenUndoChangeSuccess  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "org.springframework.context.ApplicationContext.getBean(String)" because "com.hoang.util_classes.DrawingProgram.mainAppContext" is null
+	at com.hoang.change_on_canvas.ChangeByRectangleCommandTest.setUp(ChangeByRectangleCommandTest.java:17)
+

@@ -6,17 +6,21 @@ import com.hoang.util_classes.CommandParser;
 import com.hoang.util_classes.DateWithFormat;
 import com.hoang.util_classes.DrawingProgram;
 import com.hoang.util_interfaces.ValidComponent;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import java.util.UUID;
 
+@Component
+@Scope("prototype")
 public class ChangeByLineCommand extends ChangeByCommand {
     private String[] oldContent;
 
-    public ChangeByLineCommand(String command) {
+    public ChangeByLineCommand(@Value("--") String command) {
         super(command, UUID.randomUUID().toString(), DateWithFormat.getDateWithDayNameAndDateAndTime());
-        findOldContentOnCanvas();
     }
 
-    private void findOldContentOnCanvas() {
+    public void findOldContentOnCanvas() {
         CanvasComponent mainCanvas = DrawingProgram.getMainCanvas();
         ValidComponent component = CommandParser.getComponentByParsingCommand(getCommand());
         LineComponent lineComponent = (LineComponent) component;
@@ -37,7 +41,7 @@ public class ChangeByLineCommand extends ChangeByCommand {
             int minXCoordinate = Math.min(x1, x2);
             int maxXCoordinate = Math.max(x1, x2);
             oldContent = new String[maxXCoordinate - minXCoordinate + 1];
-            for(int i = 0, xCoordinate = minXCoordinate; xCoordinate <= maxXCoordinate; i++, xCoordinate++) {
+            for (int i = 0, xCoordinate = minXCoordinate; xCoordinate <= maxXCoordinate; i++, xCoordinate++) {
                 oldContent[i] = mainCanvas.getColorAtPoint(xCoordinate, y1);
             }
         }

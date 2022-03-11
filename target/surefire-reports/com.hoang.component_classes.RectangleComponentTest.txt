@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hoang.component_classes.RectangleComponentTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in com.hoang.component_classes.RectangleComponentTest
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! - in com.hoang.component_classes.RectangleComponentTest
+whenDrawRectangleInsideCanvasThenCanvasDrawRectangle  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "com.hoang.component_classes.CanvasComponent.getColorAtPoint(int, int)" because the return value of "com.hoang.util_classes.DrawingProgram.getMainCanvas()" is null
+	at com.hoang.component_classes.RectangleComponentTest.whenDrawRectangleInsideCanvasThenCanvasDrawRectangle(RectangleComponentTest.java:21)
+

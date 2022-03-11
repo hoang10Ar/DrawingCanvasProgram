@@ -2,14 +2,18 @@ package com.hoang.util_classes;
 
 import com.hoang.component_classes.CanvasComponent;
 import com.hoang.component_classes.ListComponent;
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_interfaces.DrawableOnCanvas;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
 import com.hoang.util_interfaces.ValidComponent;
+import org.springframework.context.ApplicationContext;
+
 import java.util.Scanner;
 
 public class DrawingProgram {
-    private static final Scanner input = new Scanner(System.in);
-    private static CanvasComponent mainCanvas = new CanvasComponent(1, 1);
+    private static Scanner input;
+    private static ApplicationContext mainAppContext;
+    private static CanvasComponent mainCanvas;
 
     public static Scanner getInput() {
         return input;
@@ -20,14 +24,22 @@ public class DrawingProgram {
     }
 
     public static void setMainCanvas(CanvasComponent newCanvas) {
-        mainCanvas = new CanvasComponent(newCanvas);
+        mainCanvas = (CanvasComponent) mainAppContext.getBean("canvasComponent");
+        mainCanvas.setCanvasMatrix(newCanvas.getCanvasMatrix());
     }
 
     public static void runProgram() {
+        initProperties();
         ListComponent.initDefinitionList();
         enterCommandToCreateCanvasComponent();
         mainCanvas.printCanvas();
         enterCommandsToDrawOnCanvas();
+    }
+
+    private static void initProperties() {
+        input = new Scanner(System.in);
+        mainAppContext = MainApplicationContext.getApplicationContext();
+        mainCanvas = (CanvasComponent) mainAppContext.getBean("canvasComponent");
     }
 
     private static String enterCommandToCreateCanvasComponent() {

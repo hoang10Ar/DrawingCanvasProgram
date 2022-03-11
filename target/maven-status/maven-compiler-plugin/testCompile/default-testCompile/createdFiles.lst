@@ -1,0 +1,13 @@
+com\hoang\util_classes\CommandParserTest.class
+com\hoang\component_classes\RectangleComponentTest.class
+com\hoang\component_classes\LineComponentTest.class
+com\hoang\change_on_canvas\ChangeByRectangleCommandTest.class
+com\hoang\AppTest.class
+com\hoang\component_classes\BucketFillComponentTest.class
+com\hoang\component_classes\HistoryComponentTest.class
+com\hoang\component_classes\CanvasComponentTest.class
+com\hoang\util_classes\CommandTypeCheckerTest.class
+com\hoang\change_on_canvas\ChangeByBucketFillCommandTest.class
+com\hoang\change_on_canvas\ChangeByLineCommandTest.class
+com\hoang\component_classes\UndoComponentTest.class
+com\hoang\change_on_canvas\ChangeByCanvasCommandTest.class

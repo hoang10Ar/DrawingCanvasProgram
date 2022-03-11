@@ -2,10 +2,12 @@ package com.hoang.component_classes;
 
 import com.hoang.change_on_canvas.ChangeByCommand;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Component
 public class HistoryComponent implements NonDrawableOnCanvas {
     private static List<ChangeByCommand> commandsList = new ArrayList<>();
 

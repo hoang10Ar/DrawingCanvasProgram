@@ -2,7 +2,9 @@ package com.hoang.component_classes;
 
 import com.hoang.change_on_canvas.ChangeByCommand;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UndoComponent implements NonDrawableOnCanvas {
     @Override
     public void performFunction() {

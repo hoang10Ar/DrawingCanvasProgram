@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hoang.component_classes.CanvasComponentTest
 -------------------------------------------------------------------------------
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in com.hoang.component_classes.CanvasComponentTest
+Tests run: 10, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.279 s <<< FAILURE! - in com.hoang.component_classes.CanvasComponentTest
+whenDrawCanvasOnAnotherCanvasThenOldCanvasRemoved  Time elapsed: 0.276 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "com.hoang.component_classes.CanvasComponent.getCanvasMatrix()" because the return value of "com.hoang.util_classes.DrawingProgram.getMainCanvas()" is null
+	at com.hoang.component_classes.CanvasComponentTest.whenDrawCanvasOnAnotherCanvasThenOldCanvasRemoved(CanvasComponentTest.java:312)
+

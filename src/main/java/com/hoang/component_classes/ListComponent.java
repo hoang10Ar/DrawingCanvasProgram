@@ -1,10 +1,14 @@
 package com.hoang.component_classes;
 
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_classes.CommandDefinition;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ListComponent implements NonDrawableOnCanvas {
     private static List<CommandDefinition> definitionList = new ArrayList<>();
 
@@ -34,7 +38,12 @@ public class ListComponent implements NonDrawableOnCanvas {
     }
 
     private static void addDefinition(String id, String structure, String description) {
-        definitionList.add(new CommandDefinition(id, structure, description));
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        CommandDefinition definition = (CommandDefinition) appContext.getBean("commandDefinition") ;
+        definition.setIdOfCommand(id);
+        definition.setStructureOfCommand(structure);
+        definition.setDescriptionOfCommand(description);
+        definitionList.add(definition);
     }
 
     public static void listCommandsDefinition() {

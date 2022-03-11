@@ -1,22 +1,37 @@
 package com.hoang.component_classes;
 
 import com.hoang.change_on_canvas.ChangeByLineCommand;
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@Component
+@Scope("prototype")
 public class LineComponent implements DrawableOnCanvas {
     private PointXY firstPoint, secondPoint;
 
-    public LineComponent(int x1, int y1, int x2, int y2) {
-        firstPoint = new PointXY(x1, y1);
-        secondPoint = new PointXY(x2, y2);
+    @Autowired
+    public LineComponent(@Value("1") int x1, @Value("1") int y1,
+                         @Value("1") int x2, @Value("1") int y2) {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        firstPoint = (PointXY) appContext.getBean("pointXY");
+        firstPoint.setXCoordinate(x1);
+        firstPoint.setYCoordinate(y1);
+        secondPoint = (PointXY) appContext.getBean("pointXY");
+        secondPoint.setXCoordinate(x2);
+        secondPoint.setYCoordinate(y2);
     }
 
     public String toString() {
@@ -29,7 +44,11 @@ public class LineComponent implements DrawableOnCanvas {
         if(isLineValidOnCanvas(canvas)) {
             String command = "L " + firstPoint.getXCoordinate() + " " + firstPoint.getYCoordinate()
                     + " " + secondPoint.getXCoordinate() + " " + secondPoint.getYCoordinate();
-            HistoryComponent.addHistory(new ChangeByLineCommand(command));
+            ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+            ChangeByLineCommand change = (ChangeByLineCommand) appContext.getBean("changeByLineCommand");
+            change.setCommand(command);
+            change.findOldContentOnCanvas();
+            HistoryComponent.addHistory(change);
 
             if(isVerticalLine()) {
                 drawVerticalLineOnCanvas(canvas);
@@ -40,8 +59,7 @@ public class LineComponent implements DrawableOnCanvas {
     }
 
     private boolean isLineValidOnCanvas(CanvasComponent canvas) {
-        return (isLineInsideCanvas(canvas) && (isVerticalLine()
-                || isHorizontalLine()));
+        return (isLineInsideCanvas(canvas) && (isVerticalLine() || isHorizontalLine()));
     }
 
     private boolean isLineInsideCanvas(CanvasComponent canvas) {

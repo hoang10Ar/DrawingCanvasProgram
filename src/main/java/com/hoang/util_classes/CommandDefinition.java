@@ -2,15 +2,28 @@ package com.hoang.util_classes;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Getter
 @Setter
+@Component
+@Scope("prototype")
 public class CommandDefinition {
-    private String idOfCommand, structureOfCommand, descriptionOfCommand;
+    private String idOfCommand;
+    private String structureOfCommand;
+    private String descriptionOfCommand;
+
+    public CommandDefinition(@Value(" ") String id,
+                             @Value(" ") String structure,
+                             @Value(" ") String description) {
+        this.idOfCommand = id;
+        this.structureOfCommand = structure;
+        this.descriptionOfCommand = description;
+    }
 
     public void printDefinition() {
         System.out.format("%-20s", this.getStructureOfCommand());

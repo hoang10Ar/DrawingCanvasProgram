@@ -1,9 +1,14 @@
 package com.hoang.util_classes;
 
 import com.hoang.component_classes.*;
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_interfaces.ValidComponent;
+import org.springframework.context.ApplicationContext;
 
 public class CommandParser {
+    private static ApplicationContext applicationContext
+            = MainApplicationContext.getApplicationContext();
+
     public static ValidComponent getComponentByParsingCommand(String command) {
         ValidComponent component = null;
 
@@ -38,7 +43,11 @@ public class CommandParser {
         String[] arguments = getArgumentsInCommand(command);
         int width = Integer.parseInt(arguments[1]);
         int height = Integer.parseInt(arguments[2]);
-        return new CanvasComponent(width, height);
+
+        CanvasComponent canvas = (CanvasComponent) applicationContext.getBean("canvasComponent");
+        canvas.setWidthAndHeight(width, height);
+
+        return canvas;
     }
 
     public static String[] getArgumentsInCommand(String command) {
@@ -47,48 +56,84 @@ public class CommandParser {
 
     private static LineComponent getLineComponentByParsingCommand(String command) {
         String[] arguments = getArgumentsInCommand(command);
-        PointXY point1 = new PointXY(Integer.parseInt(arguments[1]), Integer.parseInt(arguments[2]));
-        PointXY point2 = new PointXY(Integer.parseInt(arguments[3]), Integer.parseInt(arguments[4]));
-        return new LineComponent(point1, point2);
+
+        PointXY point1 = (PointXY) applicationContext.getBean("pointXY");
+        point1.setXCoordinate(Integer.parseInt(arguments[1]));
+        point1.setYCoordinate(Integer.parseInt(arguments[2]));
+
+        PointXY point2 = (PointXY) applicationContext.getBean("pointXY");
+        point2.setXCoordinate(Integer.parseInt(arguments[3]));
+        point2.setYCoordinate(Integer.parseInt(arguments[4]));
+
+        LineComponent line = (LineComponent) applicationContext.getBean("lineComponent");
+        line.setFirstPoint(point1);
+        line.setSecondPoint(point2);
+
+        return line;
     }
 
     private static RectangleComponent getRectangleComponentByParsingCommand(String command) {
         String[] arguments = getArgumentsInCommand(command);
-        PointXY topLeftPoint = new PointXY(Integer.parseInt(arguments[1]), Integer.parseInt(arguments[2]));
-        PointXY bottomRightPoint = new PointXY(Integer.parseInt(arguments[3]), Integer.parseInt(arguments[4]));
-        return new RectangleComponent(topLeftPoint, bottomRightPoint);
+
+        PointXY topLeftPoint = (PointXY) applicationContext.getBean("pointXY");
+        topLeftPoint.setXCoordinate(Integer.parseInt(arguments[1]));
+        topLeftPoint.setYCoordinate(Integer.parseInt(arguments[2]));
+
+        PointXY bottomRightPoint = (PointXY) applicationContext.getBean("pointXY");
+        bottomRightPoint.setXCoordinate(Integer.parseInt(arguments[3]));
+        bottomRightPoint.setYCoordinate(Integer.parseInt(arguments[4]));
+
+        RectangleComponent rect =
+                (RectangleComponent) applicationContext.getBean("rectangleComponent");
+        rect.setTopLeftPoint(topLeftPoint);
+        rect.setBottomRightPoint(bottomRightPoint);
+
+        return rect;
     }
 
     private static BucketFillComponent getBucketFillComponentByParsingCommand(String command) {
         String[] arguments = getArgumentsInCommand(command);
-        PointXY startPoint = new PointXY(Integer.parseInt(arguments[1]), Integer.parseInt(arguments[2]));
-        String color = arguments[3];
-        return new BucketFillComponent(startPoint, color);
+        String newColor = arguments[3];
+
+        PointXY startPoint = (PointXY) applicationContext.getBean("pointXY");
+        startPoint.setXCoordinate(Integer.parseInt(arguments[1]));
+        startPoint.setYCoordinate(Integer.parseInt(arguments[2]));
+
+        BucketFillComponent bucketFill =
+                (BucketFillComponent) applicationContext.getBean("bucketFillComponent");
+        bucketFill.setNewColor(newColor);
+        bucketFill.setStartPoint(startPoint);
+
+        return bucketFill;
     }
 
     private static QuitComponent getQuitComponentByParsingCommand(String command) {
-        return new QuitComponent();
+        return (QuitComponent) applicationContext.getBean("quitComponent");
     }
 
     private static ListComponent getListComponentByParsingCommand(String command) {
-        return new ListComponent();
+        return (ListComponent) applicationContext.getBean("listComponent");
     }
 
     private static HistoryComponent getHistoryComponentByParsingCommand(String command) {
-        return new HistoryComponent();
+        return (HistoryComponent) applicationContext.getBean("historyComponent");
     }
 
     private static UndoComponent getUndoComponentByParsingCommand(String command) {
-        return new UndoComponent();
+        return (UndoComponent) applicationContext.getBean("undoComponent");
     }
 
     private static ViewCanvasComponent getViewCanvasComponentByParsingCommand(String command) {
-        return new ViewCanvasComponent();
+        return (ViewCanvasComponent) applicationContext.getBean("viewCanvasComponent");
     }
 
     private static JumpComponent getJumpComponentByParsingCommand(String command) {
         String[] arguments = getArgumentsInCommand(command);
         String idOfCommand = arguments[1];
-        return new JumpComponent(idOfCommand);
+
+        JumpComponent jump =  (JumpComponent) applicationContext.getBean("jumpComponent");
+        jump.setIdWillBeJumped(idOfCommand);
+
+        return jump;
     }
 }

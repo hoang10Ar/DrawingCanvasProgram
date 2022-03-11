@@ -2,25 +2,33 @@ package com.hoang.change_on_canvas;
 
 import com.hoang.component_classes.BucketFillComponent;
 import com.hoang.component_classes.CanvasComponent;
+import com.hoang.configuration.MainApplicationContext;
 import com.hoang.util_classes.CommandParser;
 import com.hoang.util_classes.DateWithFormat;
 import com.hoang.util_classes.DrawingProgram;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ValidComponent;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 import java.util.UUID;
 
+@Component
+@Scope("prototype")
 public class ChangeByBucketFillCommand extends ChangeByCommand {
     private CanvasComponent oldContent;
     private PointXY topLeftPoint;
 
-    public ChangeByBucketFillCommand(String command) {
+    public ChangeByBucketFillCommand(@Value("--") String command) {
         super(command, UUID.randomUUID().toString(), DateWithFormat.getDateWithDayNameAndDateAndTime());
-        findOldContentOnCanvas();
     }
 
-    private void findOldContentOnCanvas() {
-        CanvasComponent canvasCopy = new CanvasComponent(DrawingProgram.getMainCanvas());
+    public void findOldContentOnCanvas() {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        CanvasComponent canvasCopy = (CanvasComponent) appContext.getBean("canvasComponent");
+        canvasCopy.setCanvasMatrix(DrawingProgram.getMainCanvas().getCanvasMatrix());
         ValidComponent component = CommandParser.getComponentByParsingCommand(getCommand());
         BucketFillComponent bucketFillComponent = (BucketFillComponent) component;
         PointXY startPoint = bucketFillComponent.getStartPoint();
@@ -62,28 +70,36 @@ public class ChangeByBucketFillCommand extends ChangeByCommand {
                 maxYCoordinateOfArea = firstPoint.getYCoordinate();
             }
 
-            PointXY upSidePoint = new PointXY(firstPoint.getXCoordinate(), firstPoint.getYCoordinate() - 1);
+            PointXY upSidePoint = (PointXY) appContext.getBean("pointXY");
+            upSidePoint.setXCoordinate(firstPoint.getXCoordinate());
+            upSidePoint.setYCoordinate(firstPoint.getYCoordinate() - 1);
             if (canvasCopy.isHavePoint(upSidePoint) && canvasCopy.getColorAtPoint(upSidePoint).equals(oldColor)
                     && !pointList.contains(upSidePoint)) {
                 pointList.addLast(upSidePoint);
                 pointHaveBeenInList[upSidePoint.getXCoordinate()][upSidePoint.getYCoordinate()] = true;
             }
 
-            PointXY downSidePoint = new PointXY(firstPoint.getXCoordinate(), firstPoint.getYCoordinate() + 1);
+            PointXY downSidePoint = (PointXY) appContext.getBean("pointXY");
+            downSidePoint.setXCoordinate(firstPoint.getXCoordinate());
+            downSidePoint.setYCoordinate(firstPoint.getYCoordinate() + 1);
             if (canvasCopy.isHavePoint(downSidePoint) && canvasCopy.getColorAtPoint(downSidePoint).equals(oldColor)
                     && !pointList.contains(downSidePoint)) {
                 pointList.addLast(downSidePoint);
                 pointHaveBeenInList[downSidePoint.getXCoordinate()][downSidePoint.getYCoordinate()] = true;
             }
 
-            PointXY leftSidePoint = new PointXY(firstPoint.getXCoordinate() - 1, firstPoint.getYCoordinate());
+            PointXY leftSidePoint = (PointXY) appContext.getBean("pointXY");
+            leftSidePoint.setXCoordinate(firstPoint.getXCoordinate() - 1);
+            leftSidePoint.setYCoordinate(firstPoint.getYCoordinate());
             if (canvasCopy.isHavePoint(leftSidePoint) && canvasCopy.getColorAtPoint(leftSidePoint).equals(oldColor)
                     && !pointList.contains(leftSidePoint)) {
                 pointList.addLast(leftSidePoint);
                 pointHaveBeenInList[leftSidePoint.getXCoordinate()][leftSidePoint.getYCoordinate()] = true;
             }
 
-            PointXY rightSidePoint = new PointXY(firstPoint.getXCoordinate() + 1, firstPoint.getYCoordinate());
+            PointXY rightSidePoint = (PointXY) appContext.getBean("pointXY");
+            rightSidePoint.setXCoordinate(firstPoint.getXCoordinate() + 1);
+            rightSidePoint.setYCoordinate(firstPoint.getYCoordinate());
             if (canvasCopy.isHavePoint(rightSidePoint) && canvasCopy.getColorAtPoint(rightSidePoint).equals(oldColor)
                     && !pointList.contains(rightSidePoint)) {
                 pointList.addLast(rightSidePoint);
@@ -93,14 +109,18 @@ public class ChangeByBucketFillCommand extends ChangeByCommand {
 
         int widthOfArea = maxXCoordinateOfArea - minXCoordinateOfArea + 1;
         int heightOfArea = maxYCoordinateOfArea - minYCoordinateOfArea + 1;
-        oldContent = new CanvasComponent(widthOfArea, heightOfArea);
+        oldContent = (CanvasComponent) appContext.getBean("canvasComponent");
+        oldContent.setWidthAndHeight(widthOfArea, heightOfArea);
         for(int xCoordinate = 1, xMain = minXCoordinateOfArea; xMain <= maxXCoordinateOfArea; xCoordinate++, xMain++) {
             for(int yCoordinate = 1, yMain = minYCoordinateOfArea; yMain <= maxYCoordinateOfArea; yCoordinate++, yMain++) {
                 String color = DrawingProgram.getMainCanvas().getColorAtPoint(xMain, yMain);
                 oldContent.setColorAtPoint(xCoordinate, yCoordinate, color);
             }
         }
-        topLeftPoint = new PointXY(minXCoordinateOfArea - 1, minYCoordinateOfArea - 1);
+
+        topLeftPoint = (PointXY) appContext.getBean("pointXY");
+        topLeftPoint.setXCoordinate(minXCoordinateOfArea - 1);
+        topLeftPoint.setYCoordinate(minYCoordinateOfArea - 1);
     }
 
 
