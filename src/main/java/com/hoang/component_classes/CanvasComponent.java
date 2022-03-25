@@ -1,23 +1,32 @@
 package com.hoang.component_classes;
 
-import com.hoang.change_on_canvas.ChangeByCanvasCommand;
 import com.hoang.configuration.MainApplicationContext;
+import com.hoang.service.CanvasComponentService;
+import com.hoang.service.CommandService;
+import com.hoang.command.Command;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
+import java.util.Date;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Component
 @Scope("prototype")
+@Document("canvasComponents")
 public class CanvasComponent implements DrawableOnCanvas {
+    @Id
+    private String id;
+    private Date dateCreated;
     private int canvasWidth, canvasHeight;
     private String[][] canvasMatrix;
 
@@ -204,17 +213,45 @@ public class CanvasComponent implements DrawableOnCanvas {
         makeEmptyCanvas();
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDateCreated(Date date) {
+        this.dateCreated = date;
+    }
+
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
-        String command = "C " + this.canvasWidth + " " + this.canvasHeight;
-        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
-        ChangeByCanvasCommand change = (ChangeByCanvasCommand) appContext.getBean("changeByCanvasCommand");
-        change.setCommand(command);
-        change.findOldContentOnCanvas();
-        HistoryComponent.addHistory(change);
-
         canvas.canvasWidth = this.canvasWidth;
         canvas.canvasHeight = this.canvasHeight;
         canvas.canvasMatrix = this.canvasMatrix;
+
+        saveCommandToMongoDB();
+        saveCurrentCanvasToMongoDB();
+        ViewCanvasComponent.printCurrentCanvas();
+    }
+
+    private void saveCommandToMongoDB() {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        Command command = (Command) appContext.getBean("command");
+        command.setContent("C " + this.canvasWidth + " " + this.canvasHeight);
+        command.setDateCreated(new Date());
+        CommandService service = (CommandService) appContext.getBean("commandService");
+        service.saveCommand(command);
+    }
+
+    private void saveCurrentCanvasToMongoDB() {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+
+        CommandService commandService =
+                appContext.getBean("commandService", CommandService.class);
+        Command canvasCommand = commandService.getLastCommand();
+
+        CanvasComponentService canvasService =
+                appContext.getBean("canvasComponentService", CanvasComponentService.class);
+        this.id = canvasCommand.getId() + "_c";
+        this.dateCreated = canvasCommand.getDateCreated();
+        canvasService.save(this);
     }
 }

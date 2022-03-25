@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.hoang.change_on_canvas.ChangeByBucketFillCommandTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.064 s <<< FAILURE! - in com.hoang.change_on_canvas.ChangeByBucketFillCommandTest
-whenOldAreaFilledRestoredThenUndoChangeSuccess  Time elapsed: 0.059 s  <<< ERROR!
-java.lang.NullPointerException: Cannot invoke "org.springframework.context.ApplicationContext.getBean(String)" because "com.hoang.util_classes.DrawingProgram.mainAppContext" is null
-	at com.hoang.change_on_canvas.ChangeByBucketFillCommandTest.setUp(ChangeByBucketFillCommandTest.java:17)
-

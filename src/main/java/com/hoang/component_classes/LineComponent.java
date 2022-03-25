@@ -1,7 +1,9 @@
 package com.hoang.component_classes;
 
-import com.hoang.change_on_canvas.ChangeByLineCommand;
 import com.hoang.configuration.MainApplicationContext;
+import com.hoang.service.CanvasComponentService;
+import com.hoang.service.CommandService;
+import com.hoang.command.Command;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.ColorOfComponent;
 import com.hoang.util_interfaces.DrawableOnCanvas;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import java.util.Date;
 
 @AllArgsConstructor
 @Getter
@@ -42,19 +45,15 @@ public class LineComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         if(isLineValidOnCanvas(canvas)) {
-            String command = "L " + firstPoint.getXCoordinate() + " " + firstPoint.getYCoordinate()
-                    + " " + secondPoint.getXCoordinate() + " " + secondPoint.getYCoordinate();
-            ApplicationContext appContext = MainApplicationContext.getApplicationContext();
-            ChangeByLineCommand change = (ChangeByLineCommand) appContext.getBean("changeByLineCommand");
-            change.setCommand(command);
-            change.findOldContentOnCanvas();
-            HistoryComponent.addHistory(change);
-
             if(isVerticalLine()) {
                 drawVerticalLineOnCanvas(canvas);
             } else if(isHorizontalLine()) {
                 drawHorizontalLineOnCanvas(canvas);
             }
+
+            saveCommandToMongoDB();
+            saveCurrentCanvasToMongoDB(canvas);
+            ViewCanvasComponent.printCurrentCanvas();
         }
     }
 
@@ -90,5 +89,31 @@ public class LineComponent implements DrawableOnCanvas {
         for(int xCoordinate = minXCoordinate; xCoordinate <= maxXCoordinate; xCoordinate++) {
             canvas.setColorAtPoint(xCoordinate, yCoordinate, ColorOfComponent.LINE_COLOR);
         }
+    }
+
+    private void saveCommandToMongoDB() {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        Command command = (Command) appContext.getBean("command");
+        command.setContent("L " + firstPoint.getXCoordinate()
+                + " " + firstPoint.getYCoordinate()
+                + " " + secondPoint.getXCoordinate()
+                + " " + secondPoint.getYCoordinate());
+        command.setDateCreated(new Date());
+        CommandService service = (CommandService) appContext.getBean("commandService");
+        service.saveCommand(command);
+    }
+
+    private void saveCurrentCanvasToMongoDB(CanvasComponent canvasHaveBeenDrawOn) {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+
+        CommandService commandService =
+                appContext.getBean("commandService", CommandService.class);
+        Command lineCommand = commandService.getLastCommand();
+
+        CanvasComponentService canvasService =
+                appContext.getBean("canvasComponentService", CanvasComponentService.class);
+        canvasHaveBeenDrawOn.setId(lineCommand.getId() + "_c");
+        canvasHaveBeenDrawOn.setDateCreated(lineCommand.getDateCreated());
+        canvasService.save(canvasHaveBeenDrawOn);
     }
 }

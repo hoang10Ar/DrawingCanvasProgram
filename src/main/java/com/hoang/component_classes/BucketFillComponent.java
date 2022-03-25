@@ -1,8 +1,9 @@
 package com.hoang.component_classes;
 
-import com.hoang.change_on_canvas.ChangeByBucketFillCommand;
-import com.hoang.change_on_canvas.ChangeByCanvasCommand;
 import com.hoang.configuration.MainApplicationContext;
+import com.hoang.service.CanvasComponentService;
+import com.hoang.service.CommandService;
+import com.hoang.command.Command;
 import com.hoang.util_classes.PointXY;
 import com.hoang.util_interfaces.DrawableOnCanvas;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
+import java.util.Date;
 import java.util.LinkedList;
 
 @AllArgsConstructor
@@ -43,16 +44,10 @@ public class BucketFillComponent implements DrawableOnCanvas {
     @Override
     public void drawOnCanvas(CanvasComponent canvas) {
         if(canvas.isHavePoint(startPoint)) {
-            String command = "B " + startPoint.getXCoordinate() + " " + startPoint.getYCoordinate()
-                    + " " + newColor;
-            ApplicationContext appContext = MainApplicationContext.getApplicationContext();
-            ChangeByBucketFillCommand change
-                    = (ChangeByBucketFillCommand) appContext.getBean("changeByBucketFillCommand");
-            change.setCommand(command);
-            change.findOldContentOnCanvas();
-            HistoryComponent.addHistory(change);
-
             fillOnCanvas(canvas);
+            saveCommandToMongoDB();
+            saveCurrentCanvasToMongoDB(canvas);
+            ViewCanvasComponent.printCurrentCanvas();
         }
     }
 
@@ -120,5 +115,29 @@ public class BucketFillComponent implements DrawableOnCanvas {
                 col = false;
             }
         }
+    }
+
+    private void saveCommandToMongoDB() {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+        Command command = (Command) appContext.getBean("command");
+        command.setContent("B " + startPoint.getXCoordinate()
+                + " " + startPoint.getYCoordinate() + " " + newColor);
+        command.setDateCreated(new Date());
+        CommandService service = (CommandService) appContext.getBean("commandService");
+        service.saveCommand(command);
+    }
+
+    private void saveCurrentCanvasToMongoDB(CanvasComponent canvasHaveBeenDrawOn) {
+        ApplicationContext appContext = MainApplicationContext.getApplicationContext();
+
+        CommandService commandService =
+                appContext.getBean("commandService", CommandService.class);
+        Command bucketFillCommand = commandService.getLastCommand();
+
+        CanvasComponentService canvasService =
+                appContext.getBean("canvasComponentService", CanvasComponentService.class);
+        canvasHaveBeenDrawOn.setId(bucketFillCommand.getId() + "_c");
+        canvasHaveBeenDrawOn.setDateCreated(bucketFillCommand.getDateCreated());
+        canvasService.save(canvasHaveBeenDrawOn);
     }
 }

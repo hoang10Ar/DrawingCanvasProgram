@@ -1,7 +1,7 @@
 package com.hoang.component_classes;
 
 import com.hoang.configuration.MainApplicationContext;
-import com.hoang.util_classes.CommandDefinition;
+import com.hoang.command.CommandDefinition;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

@@ -1,20 +1,26 @@
 package com.hoang.component_classes;
 
-import com.hoang.change_on_canvas.ChangeByCommand;
+import com.hoang.service.CanvasComponentService;
+import com.hoang.service.CommandService;
+import com.hoang.command.Command;
 import com.hoang.util_interfaces.NonDrawableOnCanvas;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Pattern;
 
 @Getter
 @Setter
 @Component
 @Scope("prototype")
 public class JumpComponent implements NonDrawableOnCanvas {
+    @Autowired
+    private CommandService commandService;
+    @Autowired
+    private CanvasComponentService canvasService;
+
     private String idWillBeJumped;
 
     public JumpComponent(@Value("--") String id) {
@@ -23,14 +29,13 @@ public class JumpComponent implements NonDrawableOnCanvas {
 
     @Override
     public void performFunction() {
-        if(HistoryComponent.isContainHistoryHaveId(idWillBeJumped)) {
-            String idOfCurrentHistory = HistoryComponent.getLastHistory().getId();
-            while(!Pattern.matches("^" + idWillBeJumped + ".*", idOfCurrentHistory)) {
-                ChangeByCommand lastHistory = HistoryComponent.getAndRemoveLastHistory();
-                lastHistory.undoChange();
-                idOfCurrentHistory = HistoryComponent.getLastHistory().getId();
-            }
+        Command commandWillBeJumped = commandService.getLastCommandIdStartWith(idWillBeJumped);
+        if(commandWillBeJumped != null) {
+            commandService.deleteCommandAfterCommandIdStartWith(idWillBeJumped);
+            canvasService.deleteCanvasComponentByDateCreatedAfter(commandWillBeJumped.getDateCreated());
             System.out.println("Jump success!");
+        } else {
+            System.out.println("Not exist command with that id!");
         }
     }
 }
